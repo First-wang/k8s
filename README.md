@@ -157,6 +157,31 @@ Infra container 是一个非常小的镜像，大概 100~200KB 左右，是一�
 * 查看其他容器的工作状态，这也是它可以做的事情。不再需要去 SSH 登陆到容器里去看，只要把监控组件装到额外的小容器里面就可以了，然后把它作为一个 Sidecar 启动起来，跟主业务容器进行协作，所以同样业务监控也都可以通过 Sidecar 方式来去做。
 
 
+# 应用编排管理
+
+## K8s资源对象
+
+* Spec 期望的状态
+* Status 观察到的状态
+* Metadata
+    1. Labels 标示型的Key:Value元数据，多被 Selector 使用
+    2. Annotations 存储资源的非标识性信息，扩展资源的spec/status
+    3. OwnerReference 集合类资源，比如 Replicaset 创建的Pods就会有 OwnerReference 信息。方便反向查找创建资源对象，方便进行及联删除
+    
+
+`kubectl get pods --show-labels -l 'env in (test,dev)'`
+
+`--show-labels` 代表展示pods的标签，
+`-l` 后面是 Selector 某个标签，支持集合型查询 `'env in (test,dev)'` ，以及相等型 `env=dev,xxx=xxx` 这种，后者多个label是"与"的关系。
+    
+## 控制器模式
+
+![](http://image.wangdy.cn/k8s/%E6%8E%A7%E5%88%B6%E5%99%A8%E6%A8%A1%E5%BC%8F.png)
+
+* 由声明式的API驱动-描述K8s资源对象
+* 由控制器异步地控制系统向终态驱动
+* 使系统的自动化和无人值守化成为可能
+* 便于扩展-自定义资源和控制器
 
 
 
