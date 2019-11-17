@@ -284,11 +284,13 @@ PVC,PV,Pod创建使用完整流程
 2. 如何进行数据的快速复制和迁移
 
 解决办法：
-- Kubernetes CIS Snapshotter Controller
+- Kubernetes CSI Snapshotter Controller
 
 类似于PV/PVC
 
 用户定义 `VolumeSnapshot` ，管理员定义 `VolumeSnapshotClass` ，系统会动态生成 `VolumeSnapShotContent`
+
+恢复数据时，配置 PVC 的 `dataSource` 为已创建好的 `VolumeSnapshot`
 
 ## 拓扑调度
 
@@ -305,7 +307,12 @@ PVC,PV,Pod创建使用完整流程
 
 - 将 PV 的 Binding / Dynamic Provisioning 操作**_延迟_**到 Pod 调度确定结果之后
 
+#### 实现流程
+
 ![](http://image.wangdy.cn/k8s/201911172038-89AF-4F50-826B-D257C63AFAF8.png)
 
+CSI是Container Storage Interface（容器存储接口）的简写，目的是定义行业标准“容器存储接口”，使存储供应商（SP）能够开发一个符合CSI标准的插件并使其可以在多个容器编排（CO）系统中工作。
 
+上图中 csi-snapshottor 和 csi-provisioner 部分为社区推动实现的 controller 部分，右边为 SP 实现的不同的 Plugin(Driver)，controller 与 plugin 之间通过 grpc 调用，后者通过自己的 openAPI 完成真实的云服务创建。
+ 
 
