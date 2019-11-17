@@ -1,6 +1,6 @@
 # Kubernetes
 
-> 记录一些k8s相关的学习
+> 记录一些k8s相关的学习,感谢 [阿里大佬](https://developer.aliyun.com/learning/roadmap/cloudnative?spm=5176.13257455.1389354.1.604b7facM746tv)
 
 # Kubernetes 核心概念
 
@@ -274,5 +274,38 @@ _PVC_ 与 _PV_ 的关系类似于软件工程中的 **_接口_** 与 **_实现_*
 PVC,PV,Pod创建使用完整流程
 
 ![](http://image.wangdy.cn/k8s/201911161202-421B-4E3B-A167-AFA02B1E2972.png)
+
+# 存储快照与拓扑调度
+
+## 存储快照
+
+产生背景：
+1. 如何保证重要数据在误操作之后可以快速恢复？ 
+2. 如何进行数据的快速复制和迁移
+
+解决办法：
+- Kubernetes CIS Snapshotter Controller
+
+类似于PV/PVC
+
+用户定义 `VolumeSnapshot` ，管理员定义 `VolumeSnapshotClass` ，系统会动态生成 `VolumeSnapShotContent`
+
+## 拓扑调度
+
+> 这里的拓扑指K8s集群中 node 位置关系的一种人为划分规则
+
+产生背景：
+
+如果创建的 PV 有 `.spec.nodeAffinity` 的要求，即只有特定的 Nodes 上才能访问 PV 资源，
+原有创建 Pod 的流程与但创建 PV 的流程是分离的，所以无法保证新创建的 Pod 能被调度到可以访问 PV 资源的 Node 上，导致 Pod 起不来。
+
+本质上讲，PV 在Binding或者Dynamic Provisioning时，不知道使用此 PV 的 Pod 调度在哪个 Node 上，但 PV 的访问对 Node 的拓扑有限制。
+
+解决方法：
+
+- 将 PV 的 Binding / Dynamic Provisioning 操作**_延迟_**到 Pod 调度确定结果之后
+
+![](http://image.wangdy.cn/k8s/201911172038-89AF-4F50-826B-D257C63AFAF8.png)
+
 
 
