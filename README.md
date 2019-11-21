@@ -316,3 +316,23 @@ CSI是Container Storage Interface（容器存储接口）的简写，目的是�
 上图中 csi-snapshottor 和 csi-provisioner 部分为社区推动实现的 controller 部分，右边为 SP 实现的不同的 Plugin(Driver)，controller 与 plugin 之间通过 grpc 调用，后者通过自己的 openAPI 完成真实的云服务创建。
  
 
+# 应用健康
+
+应用健康状态
+- Readiness Probe 就绪指针
+- Liveness Probe 存活指针
+
+![](http://image.wangdy.cn/k8s/201911212144-C5F8-4C25-B674-7B7FDF31850B.png)
+
+![](http://image.wangdy.cn/k8s/201911212147-92B3-42B0-9055-452B3F73AAA0.png)
+
+常见异常：
+- Pod 处于 Pending，表示调度器没有介入，可以查看事件排查，一般与资源使用相关。
+- Pod 处于 waiting，一般表示镜像没有正常拉取，可能与私有镜像仓库、地址不存在等相关。
+- Pod 不断被拉起且可以看到 crashing，表示 Pod 已被正常调度但启动失败，可能是权限、配置的问题，检查日志查看。
+
+
+
+
+
+
