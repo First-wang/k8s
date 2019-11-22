@@ -332,6 +332,37 @@ CSI是Container Storage Interface（容器存储接口）的简写，目的是�
 - Pod 不断被拉起且可以看到 crashing，表示 Pod 已被正常调度但启动失败，可能是权限、配置的问题，检查日志查看。
 
 
+# K8s Service
+
+K8s 通过 Service 做服务发现和负载均衡
+
+#### 为什么需要服务发现
+
+1. Pod 生命周期短，IP随时发生变化
+2. Deployment 需要统一访问入口和做负载均衡
+3. 应用间在不同环境部署时需要保持同样的部署拓扑和访问方式
+
+#### 向集群外暴露 Service
+
+Service 的类型：
+
+- ClusterIP
+- ExternalName
+- NodePort
+- LoadBalancer
+
+其中 NodePort 和 LoadBalancer 可以向集群外暴露服务
+
+![](http://image.wangdy.cn/k8s/201911221721-3300-45D5-9EB4-57ED2842D2C3.png)
+
+![](http://image.wangdy.cn/k8s/201911221722-5F18-4BD6-B496-05C3885A701D.png)
+
+
+ 
+
+
+
+
 
 
 
